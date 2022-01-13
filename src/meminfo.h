@@ -1,5 +1,5 @@
-#ifndef _MEMINFO
-#define _MEMINFO
+#ifndef _MEMINFO_H
+#define _MEMINFO_H
 
 #include <ctype.h>
 #include <errno.h>

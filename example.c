@@ -1,14 +1,8 @@
-#include <errno.h>
-#include <stdio.h>
-#include <stdlib.h>
-#include <string.h>
-#include <sys/sysinfo.h>
-#include <time.h>
+// gcc -O2 -pedantic-errors -Wall -Werror src/*.c example.c -o sysinfo
+// make ARGS="example.c"
+// make debug ARGS="example.c"
 
-#include "cpuinfo.h"
-#include "file-handler.h"
-#include "log-handler.h"
-#include "meminfo.h"
+#include "src/c-sysinfo.h"
 
 void get_meminfo(void)
 {
@@ -49,69 +43,31 @@ void get_cpuinfo(void)
         fprintf(stdout, "CPU min MHz: %s", info.CPUMinMHz);
 }
 
-void get_user(void)
+void get_osinfo(void)
 {
-        char *user = NULL;
+        struct OsInfo info;
+        int status = 0;
 
-        user = getenv("USER");
-        if (user == NULL) {
-                LOG_ERROR("$USER not defined");
-                exit(EXIT_FAILURE);
-        }
-
-        fprintf(stdout, "User: %s\n", user);
-}
-
-void get_hostname(void)
-{
-        FILE *hostname_file = NULL;
-        const char *hostname_path = "/etc/hostname";
-
-        hostname_file = read_file(hostname_path);
-
-        char hostname[512];
-
-        fgets(hostname, 512, hostname_file);
-
-        close_file(hostname_file);
-
-        fprintf(stdout, "Hostname: %s", hostname);
-}
-
-void get_sysinfo(void)
-{
-        struct sysinfo info;
-        int status;
-
-        status = sysinfo(&info);
+        status = osinfo(&info);
         if (status < 0) {
-                char err[512];
-                strerror_r(errno, err, sizeof(err));
-                LOG_ERROR("%s", err);
+                LOG_ERROR("Could not load OS information.");
                 exit(EXIT_FAILURE);
         }
 
-        struct tm time_info;
-        char buffer[512];
-
-        /* Time since boot */
-        gmtime_r(&info.uptime, &time_info);
-        strftime(buffer, sizeof(buffer), "%I:%M:%S", &time_info);
-        fprintf(stdout, "Uptime: %s\n", buffer);
+        fprintf(stdout, "User: %s", info.User);
+        fprintf(stdout, "Hostname: %s", info.Hostname);
+        fprintf(stdout, "Kernel name: %s", info.KernelName);
+        fprintf(stdout, "Kernel release: %s", info.KernelRelease);
+        fprintf(stdout, "Kernel version: %s", info.KernelVersion);
+        fprintf(stdout, "OS: %s", info.OSName);
+        fprintf(stdout, "Uptime: %s", info.Uptime);
 }
 
 int main(int argc, char *argv[])
 {
         get_meminfo();
         get_cpuinfo();
-        get_sysinfo();
-        get_user();
-        get_hostname();
-
-        // cat /proc/version
-        // cat /etc/os-release
-        // cat /etc/arch-release 
-        // getenv XDG_CURRENT_DESKTOP
+        get_osinfo();
 
         return EXIT_SUCCESS;
 }

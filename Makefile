@@ -15,7 +15,7 @@ debug: CFLAGS += -g
 debug: all
 
 relase:
-	$(CC) $(CFLAGS) $(COMPILER_FLAGS) $(OBJS) -o $(OBJ_NAME)
+	$(CC) $(CFLAGS) $(COMPILER_FLAGS) $(OBJS) $(ARGS) -o $(OBJ_NAME)
 
 clean:
 	rm $(OBJ_NAME)

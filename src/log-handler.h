@@ -1,5 +1,5 @@
-#ifndef _LOG_HANDLER
-#define _LOG_HANDLER
+#ifndef _LOG_HANDLER_H
+#define _LOG_HANDLER_H
 
 #define CRED "\x1B[31m"
 #define CGRN "\x1B[32m"
