@@ -1,9 +1,14 @@
 #ifndef _MEMINFO
 #define _MEMINFO
 
+#include <ctype.h>
+#include <errno.h>
+#include <stdio.h>
 #include <stdint.h>
+#include <stdlib.h>
+#include <string.h>
 
-#include "file-handler.h"
+#include "log-handler.h"
 
 /* Details about amount of free and used memory in the system */
 struct MemInfo {

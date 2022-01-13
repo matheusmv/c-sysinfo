@@ -1,10 +1,5 @@
 #include "meminfo.h"
 
-#include <ctype.h>
-#include <stdio.h>
-#include <stdlib.h>
-#include <string.h>
-
 #define BUFFERSIZE 512
 
 #define MEMINFOPATH  "/proc/meminfo"
@@ -63,7 +58,13 @@ meminfo(struct MemInfo *info)
         memset(info, 0, sizeof(struct MemInfo));
 
         FILE *proc_meminfo = NULL;
-        proc_meminfo = read_file(MEMINFOPATH);
+        proc_meminfo = fopen(MEMINFOPATH, "r");
+        if (proc_meminfo == NULL) {
+                char err[512];
+                strerror_r(errno, err, sizeof(err));
+                LOG_ERROR("%s", err);
+                exit(EXIT_FAILURE);
+        }
 
         char temp[BUFFERSIZE];
         while (fgets(temp, BUFFERSIZE, proc_meminfo) != NULL) {
@@ -82,7 +83,7 @@ meminfo(struct MemInfo *info)
                 compare_string_and_extract_value(SRECLAIMABLE, temp, BUFFERSIZE, &info->SReclaimable);
         }
 
-        close_file(proc_meminfo);
+        fclose(proc_meminfo);
 
         info->Cached += info->SReclaimable;
         info->MemUsed = info->MemTotal - info->MemFree - info->Buffers - info->Cached;

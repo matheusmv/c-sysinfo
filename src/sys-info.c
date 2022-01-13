@@ -5,6 +5,7 @@
 #include <sys/sysinfo.h>
 #include <time.h>
 
+#include "cpuinfo.h"
 #include "file-handler.h"
 #include "log-handler.h"
 #include "meminfo.h"
@@ -26,6 +27,26 @@ void get_meminfo(void)
         fprintf(stdout, "Shared: %ld MiB\n", info.Shmem / (1 << 10));
         fprintf(stdout, "Buff/Cache: %ld MiB\n", (info.Buffers + info.Cached) / (1 << 10));
         fprintf(stdout, "Available: %ld MiB\n", info.MemAvailable / (1 << 10));
+}
+
+void get_cpuinfo(void)
+{
+        struct CpuInfo info;
+        int status = 0;
+
+        status = cpuinfo(&info);
+        if (status < 0) {
+                LOG_ERROR("Could not load cpu information.");
+                exit(EXIT_FAILURE);
+        }
+
+        fprintf(stdout, "Architecture: %s", info.Architecture);
+        fprintf(stdout, "Vendor ID: %s", info.VendorID);
+        fprintf(stdout, "Model name: %s", info.ModelName);
+        fprintf(stdout, "CPU Cores: %s", info.Cores);
+        fprintf(stdout, "Threads: %s", info.Threads);
+        fprintf(stdout, "CPU max MHz: %s", info.CPUMaxMHz);
+        fprintf(stdout, "CPU min MHz: %s", info.CPUMinMHz);
 }
 
 void get_user(void)
@@ -82,12 +103,12 @@ void get_sysinfo(void)
 int main(int argc, char *argv[])
 {
         get_meminfo();
+        get_cpuinfo();
         get_sysinfo();
         get_user();
         get_hostname();
 
         // cat /proc/version
-        // cat /proc/cpuinfo
         // cat /etc/os-release
         // cat /etc/arch-release 
         // getenv XDG_CURRENT_DESKTOP
