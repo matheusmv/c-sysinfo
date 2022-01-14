@@ -64,11 +64,20 @@ void get_osinfo(void)
         fprintf(stdout, "Uptime: %s", info.Uptime);
 }
 
+void test_log(void)
+{
+        LOG_INFO("info");
+        LOG_DEBUG("debug");
+        LOG_WARNING("warning");
+        LOG_ERROR("error");
+}
+
 int main(int argc, char *argv[])
 {
         get_meminfo();
         get_cpuinfo();
         get_osinfo();
+        test_log();
 
         return EXIT_SUCCESS;
 }
