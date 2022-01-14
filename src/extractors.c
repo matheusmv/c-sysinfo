@@ -7,8 +7,8 @@ extract_value(const char *stkn, const char *etkn, const char *src, char *dest, s
         if (start == NULL)
                 return -1;
 
-        char *end = etkn != NULL && strncmp(etkn, "\0", strlen("\0")) ?
-                strstr(src, etkn) : &start[strlen(start)];
+        char *end = etkn == NULL || strncmp(etkn, "\n", strlen("\n")) == 0 ?
+                &start[strlen(start)] : strstr(src, etkn);
         if (end == NULL)
                 return -1;
 

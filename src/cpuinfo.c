@@ -15,8 +15,8 @@ static uint TOTAL_PROPERTIES = 7;
 static void
 find_key_and_extract_str(const char *key, const char *src, size_t src_size, char *dest)
 {
-        if (strstr(src, key) != NULL) {
-                extract_value(": ", "\0", src, dest, BUFFERSIZE);
+        if (strncmp(src, key, strlen(key)) == 0) {
+                extract_value(": ", "\n", src, dest, BUFFERSIZE);
                 TOTAL_PROPERTIES -= 1;
         }
 }

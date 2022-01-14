@@ -20,7 +20,7 @@ static uint TOTAL_PROPERTIES = 10;
 static void
 find_key_and_extract_ul(const char *key, const char *src, size_t src_size, uint64_t *dest)
 {
-        if (strstr(src, key) != NULL) {
+        if (strncmp(src, key, strlen(key)) == 0) {
                 char temp[src_size];
                 extract_value(": ", " kB", src, temp, src_size);
                 *dest = atol(temp);
