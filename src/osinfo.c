@@ -59,8 +59,8 @@ int osinfo(struct OsInfo *info)
 
         result = popen(COMMAND, "r");
         if (result == NULL) {
-                char err[512];
-                strerror_r(errno, err, sizeof(err));
+                char err[BUFFERSIZE];
+                strerror_r(errno, err, BUFFERSIZE);
                 LOG_ERROR("%s", err);
                 exit(EXIT_FAILURE);
         }

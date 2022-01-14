@@ -60,8 +60,8 @@ meminfo(struct MemInfo *info)
         FILE *proc_meminfo = NULL;
         proc_meminfo = fopen(MEMINFOPATH, "r");
         if (proc_meminfo == NULL) {
-                char err[512];
-                strerror_r(errno, err, sizeof(err));
+                char err[BUFFERSIZE];
+                strerror_r(errno, err, BUFFERSIZE);
                 LOG_ERROR("%s", err);
                 exit(EXIT_FAILURE);
         }

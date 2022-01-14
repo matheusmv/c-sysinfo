@@ -52,8 +52,8 @@ cpuinfo(struct CpuInfo *info)
 
         result = popen("lscpu | head --lines 17", "r");
         if (result == NULL) {
-                char err[512];
-                strerror_r(errno, err, sizeof(err));
+                char err[BUFFERSIZE];
+                strerror_r(errno, err, BUFFERSIZE);
                 LOG_ERROR("%s", err);
                 exit(EXIT_FAILURE);
         }
