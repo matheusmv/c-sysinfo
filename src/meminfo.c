@@ -36,9 +36,7 @@ meminfo(struct MemInfo *info)
         FILE *proc_meminfo = NULL;
         proc_meminfo = fopen(MEMINFOPATH, "r");
         if (proc_meminfo == NULL) {
-                char err[BUFFERSIZE];
-                strerror_r(errno, err, BUFFERSIZE);
-                LOG_ERROR("%s", err);
+                LOG_ERROR("%s", strerror(errno));
                 exit(EXIT_FAILURE);
         }
 

@@ -30,9 +30,7 @@ cpuinfo(struct CpuInfo *info)
 
         result = popen(COMMAND, "r");
         if (result == NULL) {
-                char err[BUFFERSIZE];
-                strerror_r(errno, err, BUFFERSIZE);
-                LOG_ERROR("%s", err);
+                LOG_ERROR("%s", strerror(errno));
                 exit(EXIT_FAILURE);
         }
 
