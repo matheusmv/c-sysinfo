@@ -13,9 +13,9 @@
 static uint TOTAL_PROPERTIES = 7;
 
 static void
-compare_key_and_extract_str(const char *key, const char *src, size_t src_size, char *dest)
+find_key_and_extract_str(const char *key, const char *src, size_t src_size, char *dest)
 {
-        if (strncmp(src, key, strlen(key)) == 0) {
+        if (strstr(src, key) != NULL) {
                 extract_value(": ", "\0", src, dest, BUFFERSIZE);
                 TOTAL_PROPERTIES -= 1;
         }
@@ -39,13 +39,13 @@ cpuinfo(struct CpuInfo *info)
                 if (TOTAL_PROPERTIES == 0)
                         break;
 
-                compare_key_and_extract_str(ARCHITECTURE, temp, BUFFERSIZE, info->Architecture);
-                compare_key_and_extract_str(THREADS, temp, BUFFERSIZE, info->Threads);
-                compare_key_and_extract_str(VENDORID, temp, BUFFERSIZE, info->VendorID);
-                compare_key_and_extract_str(MODELNAME, temp, BUFFERSIZE, info->ModelName);
-                compare_key_and_extract_str(CORES, temp, BUFFERSIZE, info->Cores);
-                compare_key_and_extract_str(CPUMAXMHZ, temp, BUFFERSIZE, info->CPUMaxMHz);
-                compare_key_and_extract_str(CPUMIMMHZ, temp, BUFFERSIZE, info->CPUMinMHz);
+                find_key_and_extract_str(ARCHITECTURE, temp, BUFFERSIZE, info->Architecture);
+                find_key_and_extract_str(THREADS, temp, BUFFERSIZE, info->Threads);
+                find_key_and_extract_str(VENDORID, temp, BUFFERSIZE, info->VendorID);
+                find_key_and_extract_str(MODELNAME, temp, BUFFERSIZE, info->ModelName);
+                find_key_and_extract_str(CORES, temp, BUFFERSIZE, info->Cores);
+                find_key_and_extract_str(CPUMAXMHZ, temp, BUFFERSIZE, info->CPUMaxMHz);
+                find_key_and_extract_str(CPUMIMMHZ, temp, BUFFERSIZE, info->CPUMinMHz);
         }
 
         pclose(result);

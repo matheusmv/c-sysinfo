@@ -56,10 +56,11 @@ void get_osinfo(void)
 
         fprintf(stdout, "User: %s", info.User);
         fprintf(stdout, "Hostname: %s", info.Hostname);
-        fprintf(stdout, "Kernel name: %s", info.KernelName);
-        fprintf(stdout, "Kernel release: %s", info.KernelRelease);
-        fprintf(stdout, "Kernel version: %s", info.KernelVersion);
         fprintf(stdout, "OS: %s", info.OSName);
+        fprintf(stdout, "Kernel: %s", info.Kernel);
+        fprintf(stdout, "Architecture: %s", info.Architecture);
+        fprintf(stdout, "Hardware Vendor: %s", info.HardwareVendor);
+        fprintf(stdout, "Hardware Model: %s", info.HardwareModel);
         fprintf(stdout, "Uptime: %s", info.Uptime);
 }
 

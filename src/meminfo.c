@@ -18,9 +18,9 @@
 static uint TOTAL_PROPERTIES = 10;
 
 static void
-compare_key_and_extract_ul(const char *key, const char *src, size_t src_size, uint64_t *dest)
+find_key_and_extract_ul(const char *key, const char *src, size_t src_size, uint64_t *dest)
 {
-        if (strncmp(src, key, strlen(key)) == 0) {
+        if (strstr(src, key) != NULL) {
                 char temp[src_size];
                 extract_value(": ", " kB", src, temp, src_size);
                 *dest = atol(temp);
@@ -45,16 +45,16 @@ meminfo(struct MemInfo *info)
                 if (TOTAL_PROPERTIES == 0)
                         break;
 
-                compare_key_and_extract_ul(MEMTOTAL, temp, BUFFERSIZE, &info->MemTotal);
-                compare_key_and_extract_ul(MEMFREE, temp, BUFFERSIZE, &info->MemFree);
-                compare_key_and_extract_ul(MEMAVAILABLE, temp, BUFFERSIZE, &info->MemAvailable);
-                compare_key_and_extract_ul(BUFFERS, temp, BUFFERSIZE, &info->Buffers);
-                compare_key_and_extract_ul(CACHED, temp, BUFFERSIZE, &info->Cached);
-                compare_key_and_extract_ul(SWAPCACHED, temp, BUFFERSIZE, &info->SwapCached);
-                compare_key_and_extract_ul(SWAPTOTAL, temp, BUFFERSIZE, &info->SwapTotal);
-                compare_key_and_extract_ul(SWAPFREE, temp, BUFFERSIZE, &info->SwapFree);
-                compare_key_and_extract_ul(SHMEM, temp, BUFFERSIZE, &info->Shmem);
-                compare_key_and_extract_ul(SRECLAIMABLE, temp, BUFFERSIZE, &info->SReclaimable);
+                find_key_and_extract_ul(MEMTOTAL, temp, BUFFERSIZE, &info->MemTotal);
+                find_key_and_extract_ul(MEMFREE, temp, BUFFERSIZE, &info->MemFree);
+                find_key_and_extract_ul(MEMAVAILABLE, temp, BUFFERSIZE, &info->MemAvailable);
+                find_key_and_extract_ul(BUFFERS, temp, BUFFERSIZE, &info->Buffers);
+                find_key_and_extract_ul(CACHED, temp, BUFFERSIZE, &info->Cached);
+                find_key_and_extract_ul(SWAPCACHED, temp, BUFFERSIZE, &info->SwapCached);
+                find_key_and_extract_ul(SWAPTOTAL, temp, BUFFERSIZE, &info->SwapTotal);
+                find_key_and_extract_ul(SWAPFREE, temp, BUFFERSIZE, &info->SwapFree);
+                find_key_and_extract_ul(SHMEM, temp, BUFFERSIZE, &info->Shmem);
+                find_key_and_extract_ul(SRECLAIMABLE, temp, BUFFERSIZE, &info->SReclaimable);
         }
 
         fclose(proc_meminfo);

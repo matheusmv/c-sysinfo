@@ -1,27 +1,22 @@
 #include "osinfo.h"
 
-#define COMMAND "echo \"User: $(whoami)\n\
-Hostname: $(uname -n)\n\
-KernelName: $(uname -s)\n\
-KernelRelease: $(uname -r)\n\
-KernelVersion: $(uname -v)\n\
-OperatingSystem: $(uname -o)\n\
-Uptime: $(uptime -p | cut -b 4-)\""
+#define COMMAND "echo \"User: $(whoami)\n$(hostnamectl)\nUptime: $(uptime -p | cut -b 4-)\""
 
 #define USER            "User:"                 /* 1 */
-#define HOSTNAME        "Hostname:"             /* 2 */
-#define KERNELNAME      "KernelName:"           /* 3 */
-#define KERNELRELEASE   "KernelRelease:"        /* 4 */
-#define KERNELVERSION   "KernelVersion:"        /* 5 */
-#define OSNAME          "OperatingSystem:"      /* 6 */
-#define UPTIME          "Uptime:"               /* 7 */
+#define HOSTNAME        "Static hostname:"      /* 2 */
+#define OSNAME          "Operating System:"     /* 3 */
+#define KERNEL          "Kernel:"               /* 4 */
+#define ARCHITECTURE    "Architecture:"         /* 5 */
+#define HARDWAREVENDOR  "Hardware Vendor:"      /* 6 */
+#define HARDWAREMODEL   "Hardware Model:"       /* 7 */
+#define UPTIME          "Uptime:"               /* 8 */
 
-static uint TOTAL_PROPERTIES = 7;
+static uint TOTAL_PROPERTIES = 8;
 
 static void
-compare_key_and_extract_str(const char *key, const char *src, size_t src_size, char *dest)
+find_key_and_extract_str(const char *key, const char *src, size_t src_size, char *dest)
 {
-        if (strncmp(src, key, strlen(key)) == 0) {
+        if (strstr(src, key) != NULL) {
                 extract_value(": ", "\0", src, dest, BUFFERSIZE);
                 TOTAL_PROPERTIES -= 1;
         }
@@ -44,13 +39,14 @@ int osinfo(struct OsInfo *info)
                 if (TOTAL_PROPERTIES == 0)
                         break;
 
-                compare_key_and_extract_str(USER, temp, BUFFERSIZE, info->User);
-                compare_key_and_extract_str(HOSTNAME, temp, BUFFERSIZE, info->Hostname);
-                compare_key_and_extract_str(KERNELNAME, temp, BUFFERSIZE, info->KernelName);
-                compare_key_and_extract_str(KERNELRELEASE, temp, BUFFERSIZE, info->KernelRelease);
-                compare_key_and_extract_str(KERNELVERSION, temp, BUFFERSIZE, info->KernelVersion);
-                compare_key_and_extract_str(OSNAME, temp, BUFFERSIZE, info->OSName);
-                compare_key_and_extract_str(UPTIME, temp, BUFFERSIZE, info->Uptime);
+                find_key_and_extract_str(USER, temp, BUFFERSIZE, info->User);
+                find_key_and_extract_str(HOSTNAME, temp, BUFFERSIZE, info->Hostname);
+                find_key_and_extract_str(OSNAME, temp, BUFFERSIZE, info->OSName);
+                find_key_and_extract_str(KERNEL, temp, BUFFERSIZE, info->Kernel);
+                find_key_and_extract_str(ARCHITECTURE, temp, BUFFERSIZE, info->Architecture);
+                find_key_and_extract_str(HARDWAREVENDOR, temp, BUFFERSIZE, info->HardwareVendor);
+                find_key_and_extract_str(HARDWAREMODEL, temp, BUFFERSIZE, info->HardwareModel);
+                find_key_and_extract_str(UPTIME, temp, BUFFERSIZE, info->Uptime);
         }
 
         pclose(result);
