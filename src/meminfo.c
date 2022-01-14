@@ -36,7 +36,7 @@ meminfo(struct MemInfo *info)
         FILE *proc_meminfo = NULL;
         proc_meminfo = fopen(MEMINFOPATH, "r");
         if (proc_meminfo == NULL) {
-                LOG_ERROR("%s", strerror(errno));
+                LOG_ERROR_FMT("%s", strerror(errno));
                 exit(EXIT_FAILURE);
         }
 

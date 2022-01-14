@@ -78,14 +78,21 @@ void test_log_file(void)
 
         logs = fopen("logs.txt", "a+");
         if (logs == NULL) {
-                LOG_ERROR("%s", strerror(errno));
+                LOG_ERROR_FMT("%s", strerror(errno));
                 exit(EXIT_FAILURE);
         }
 
-        FLOG_INFO(logs, "info %d", 1);
-        FLOG_DEBUG(logs, "debug %d", 2);
-        FLOG_WARNING(logs, "warning %d", 3);
-        FLOG_ERROR(logs, "error %d", 4);
+        FLOG_INFO(logs, "info message");
+        FLOG_INFO_FMT(logs, "info %d", 1);
+
+        FLOG_DEBUG(logs, "debug message");
+        FLOG_DEBUG_FMT(logs, "debug %d", 2);
+
+        FLOG_WARNING(logs, "warning message");
+        FLOG_WARNING_FMT(logs, "warning %d", 3);
+
+        FLOG_ERROR(logs, "error message");
+        FLOG_ERROR_FMT(logs, "error %d", 4);
 
         fclose(logs);
 }

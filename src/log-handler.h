@@ -10,28 +10,60 @@
 #define CWHT "\x1b[97m"
 #define CEND "\033[0m"
 
-#define LOG_INFO(MSG, ...) fprintf(stdout, "%s %sINFO%2s%s %s%s:'%s':%d%s - %s" MSG "%s\n",\
-                                __TIME__, CGRN, "", CEND, ULINE, __FILE__, __func__, __LINE__, CEND, CWHT, ##__VA_ARGS__, CEND)
+/* INFO */
 
-#define FLOG_INFO(STREAM, MSG, ...) fprintf(STREAM, "%s INFO%2s %s:'%s':%d - " MSG "\n",\
-                                        __TIME__, "", __FILE__, __func__, __LINE__, ##__VA_ARGS__)
+#define LOG_INFO(MSG) fprintf(stdout, "%s %sINFO%2s%s %s%s:'%s':%d%s - %s" MSG "%s\n",\
+                                __TIME__, CGRN, "", CEND, ULINE, __FILE__, __func__, __LINE__, CEND, CWHT, CEND)
 
-#define LOG_DEBUG(MSG, ...) fprintf(stdout, "%s %sDEBUG%1s%s %s%s:'%s':%d%s - %s" MSG "%s\n",\
-                                __TIME__, CBLU, "", CEND, ULINE, __FILE__, __func__, __LINE__, CEND, CWHT, ##__VA_ARGS__, CEND)
+#define LOG_INFO_FMT(MSG, ...) fprintf(stdout, "%s %sINFO%2s%s %s%s:'%s':%d%s - %s" MSG "%s\n",\
+                                        __TIME__, CGRN, "", CEND, ULINE, __FILE__, __func__, __LINE__, CEND, CWHT, ##__VA_ARGS__, CEND)
 
-#define FLOG_DEBUG(STREAM, MSG, ...) fprintf(STREAM, "%s DEBUG%1s %s:'%s':%d - " MSG "\n",\
-                                        __TIME__, "", __FILE__, __func__, __LINE__, ##__VA_ARGS__)
+#define FLOG_INFO(STREAM, MSG) fprintf(STREAM, "%s INFO%2s %s:'%s':%d - " MSG "\n",\
+                                        __TIME__, "", __FILE__, __func__, __LINE__)
 
-#define LOG_WARNING(MSG, ...) fprintf(stdout, "%s %sWARN%2s%s %s%s:'%s':%d%s - %s" MSG "%s\n",\
-                                __TIME__, CYEL, "", CEND, ULINE, __FILE__, __func__, __LINE__, CEND, CWHT, ##__VA_ARGS__, CEND)
+#define FLOG_INFO_FMT(STREAM, MSG, ...) fprintf(STREAM, "%s INFO%2s %s:'%s':%d - " MSG "\n",\
+                                                __TIME__, "", __FILE__, __func__, __LINE__, ##__VA_ARGS__)
 
-#define FLOG_WARNING(STREAM, MSG, ...) fprintf(STREAM, "%s WARN%2s %s:'%s':%d - " MSG "\n",\
-                                        __TIME__, "", __FILE__, __func__, __LINE__, ##__VA_ARGS__)
+/* DEBUG */
 
-#define LOG_ERROR(MSG, ...) fprintf(stderr, "%s %sERROR%1s%s %s%s:'%s':%d%s - %s" MSG "%s\n",\
-                                __TIME__, CRED, "", CEND, ULINE, __FILE__, __func__, __LINE__, CEND, CWHT, ##__VA_ARGS__, CEND)
+#define LOG_DEBUG(MSG) fprintf(stdout, "%s %sDEBUG%1s%s %s%s:'%s':%d%s - %s" MSG "%s\n",\
+                                __TIME__, CBLU, "", CEND, ULINE, __FILE__, __func__, __LINE__, CEND, CWHT, CEND)
 
-#define FLOG_ERROR(STREAM, MSG, ...) fprintf(STREAM, "%s ERROR%1s %s:'%s':%d - " MSG "\n",\
-                                        __TIME__, "", __FILE__, __func__, __LINE__, ##__VA_ARGS__)
+#define LOG_DEBUG_FMT(MSG, ...) fprintf(stdout, "%s %sDEBUG%1s%s %s%s:'%s':%d%s - %s" MSG "%s\n",\
+                                        __TIME__, CBLU, "", CEND, ULINE, __FILE__, __func__, __LINE__, CEND, CWHT, ##__VA_ARGS__, CEND)
+
+#define FLOG_DEBUG(STREAM, MSG) fprintf(STREAM, "%s DEBUG%1s %s:'%s':%d - " MSG "\n",\
+                                        __TIME__, "", __FILE__, __func__, __LINE__)
+
+#define FLOG_DEBUG_FMT(STREAM, MSG, ...) fprintf(STREAM, "%s DEBUG%1s %s:'%s':%d - " MSG "\n",\
+                                                __TIME__, "", __FILE__, __func__, __LINE__, ##__VA_ARGS__)
+
+/* WARNING */
+
+#define LOG_WARNING(MSG) fprintf(stdout, "%s %sWARN%2s%s %s%s:'%s':%d%s - %s" MSG "%s\n",\
+                                __TIME__, CYEL, "", CEND, ULINE, __FILE__, __func__, __LINE__, CEND, CWHT, CEND)
+
+#define LOG_WARNING_FMT(MSG, ...) fprintf(stdout, "%s %sWARN%2s%s %s%s:'%s':%d%s - %s" MSG "%s\n",\
+                                        __TIME__, CYEL, "", CEND, ULINE, __FILE__, __func__, __LINE__, CEND, CWHT, ##__VA_ARGS__, CEND)
+
+#define FLOG_WARNING(STREAM, MSG) fprintf(STREAM, "%s WARN%2s %s:'%s':%d - " MSG "\n",\
+                                        __TIME__, "", __FILE__, __func__, __LINE__)
+
+#define FLOG_WARNING_FMT(STREAM, MSG, ...) fprintf(STREAM, "%s WARN%2s %s:'%s':%d - " MSG "\n",\
+                                                __TIME__, "", __FILE__, __func__, __LINE__, ##__VA_ARGS__)
+
+/* ERROR */
+
+#define LOG_ERROR(MSG) fprintf(stderr, "%s %sERROR%1s%s %s%s:'%s':%d%s - %s" MSG "%s\n",\
+                                __TIME__, CRED, "", CEND, ULINE, __FILE__, __func__, __LINE__, CEND, CWHT, CEND)
+
+#define LOG_ERROR_FMT(MSG, ...) fprintf(stderr, "%s %sERROR%1s%s %s%s:'%s':%d%s - %s" MSG "%s\n",\
+                                        __TIME__, CRED, "", CEND, ULINE, __FILE__, __func__, __LINE__, CEND, CWHT, ##__VA_ARGS__, CEND)
+
+#define FLOG_ERROR(STREAM, MSG) fprintf(STREAM, "%s ERROR%1s %s:'%s':%d - " MSG "\n",\
+                                        __TIME__, "", __FILE__, __func__, __LINE__)
+
+#define FLOG_ERROR_FMT(STREAM, MSG, ...) fprintf(STREAM, "%s ERROR%1s %s:'%s':%d - " MSG "\n",\
+                                                __TIME__, "", __FILE__, __func__, __LINE__, ##__VA_ARGS__)
 
 #endif

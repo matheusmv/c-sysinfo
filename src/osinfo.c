@@ -32,7 +32,7 @@ int osinfo(struct OsInfo *info)
 
         result = popen(COMMAND, "r");
         if (result == NULL) {
-                LOG_ERROR("%s", strerror(errno));
+                LOG_ERROR_FMT("%s", strerror(errno));
                 exit(EXIT_FAILURE);
         }
 
