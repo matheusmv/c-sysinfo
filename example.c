@@ -72,12 +72,31 @@ void test_log(void)
         LOG_ERROR("error");
 }
 
+void test_log_file(void)
+{
+        FILE *logs = NULL;
+
+        logs = fopen("logs.txt", "a+");
+        if (logs == NULL) {
+                LOG_ERROR("%s", strerror(errno));
+                exit(EXIT_FAILURE);
+        }
+
+        FLOG_INFO(logs, "info %d", 1);
+        FLOG_DEBUG(logs, "debug %d", 2);
+        FLOG_WARNING(logs, "warning %d", 3);
+        FLOG_ERROR(logs, "error %d", 4);
+
+        fclose(logs);
+}
+
 int main(int argc, char *argv[])
 {
         get_meminfo();
         get_cpuinfo();
         get_osinfo();
         test_log();
+        test_log_file();
 
         return EXIT_SUCCESS;
 }
