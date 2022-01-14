@@ -13,7 +13,7 @@ Uptime: $(uptime -p | cut -b 4-)\""
 #define KERNELNAME      "KernelName:"           /* 3 */
 #define KERNELRELEASE   "KernelRelease:"        /* 4 */
 #define KERNELVERSION   "KernelVersion:"        /* 5 */
-#define OSNAME          "OSName:"               /* 6 */
+#define OSNAME          "OperatingSystem:"      /* 6 */
 #define UPTIME          "Uptime:"               /* 7 */
 
 static uint TOTAL_PROPERTIES = 7;
@@ -36,7 +36,7 @@ extract_value(const char *stkn, const char *src, char *dest, size_t dest_size)
 
         if (dest != NULL) {
                 memset(dest, 0, dest_size);
-                memcpy(dest, buffer, dest_size);
+                memmove(dest, buffer, dest_size);
         }
 
         return 0;

@@ -28,7 +28,7 @@ extract_value(const char *stkn, const char *src, char *dest, size_t dest_size)
 
         if (dest != NULL) {
                 memset(dest, 0, dest_size);
-                memcpy(dest, buffer, dest_size);
+                memmove(dest, buffer, dest_size);
         }
 
         return 0;
