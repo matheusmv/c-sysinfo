@@ -8,6 +8,7 @@
 #include <stdlib.h>
 #include <string.h>
 
+#include "extractors.h"
 #include "log-handler.h"
 
 /* Details about amount of free and used memory in the system */

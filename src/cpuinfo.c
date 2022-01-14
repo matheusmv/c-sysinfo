@@ -1,5 +1,7 @@
 #include "cpuinfo.h"
 
+#define COMMAND         "lscpu | head --lines 17"
+
 #define ARCHITECTURE    "Architecture:"         /* 1 */
 #define THREADS         "CPU(s):"               /* 2 */
 #define VENDORID        "Vendor ID:"            /* 3 */
@@ -10,35 +12,11 @@
 
 static uint TOTAL_PROPERTIES = 7;
 
-static int
-extract_value(const char *stkn, const char *src, char *dest, size_t dest_size)
-{
-        char *start = strstr(src, stkn);
-        if (start == NULL)
-                return -1;
-
-        start++;
-        const char *withe_space = " ";
-        while (strncmp(start, withe_space, strlen(withe_space)) == 0)
-                start++;
-
-        char buffer[dest_size];
-        memset(buffer, 0, dest_size);
-        memmove(buffer, start, strlen(start));
-
-        if (dest != NULL) {
-                memset(dest, 0, dest_size);
-                memmove(dest, buffer, dest_size);
-        }
-
-        return 0;
-}
-
 static void
-compare_string_and_extract_value(const char *key, const char *src, size_t src_size, char *dest)
+compare_key_and_extract_str(const char *key, const char *src, size_t src_size, char *dest)
 {
         if (strncmp(src, key, strlen(key)) == 0) {
-                extract_value(": ", src, dest, BUFFERSIZE);
+                extract_value(": ", "\0", src, dest, BUFFERSIZE);
                 TOTAL_PROPERTIES -= 1;
         }
 }
@@ -50,7 +28,7 @@ cpuinfo(struct CpuInfo *info)
 
         FILE *result = NULL;
 
-        result = popen("lscpu | head --lines 17", "r");
+        result = popen(COMMAND, "r");
         if (result == NULL) {
                 char err[BUFFERSIZE];
                 strerror_r(errno, err, BUFFERSIZE);
@@ -63,13 +41,13 @@ cpuinfo(struct CpuInfo *info)
                 if (TOTAL_PROPERTIES == 0)
                         break;
 
-                compare_string_and_extract_value(ARCHITECTURE, temp, BUFFERSIZE, info->Architecture);
-                compare_string_and_extract_value(THREADS, temp, BUFFERSIZE, info->Threads);
-                compare_string_and_extract_value(VENDORID, temp, BUFFERSIZE, info->VendorID);
-                compare_string_and_extract_value(MODELNAME, temp, BUFFERSIZE, info->ModelName);
-                compare_string_and_extract_value(CORES, temp, BUFFERSIZE, info->Cores);
-                compare_string_and_extract_value(CPUMAXMHZ, temp, BUFFERSIZE, info->CPUMaxMHz);
-                compare_string_and_extract_value(CPUMIMMHZ, temp, BUFFERSIZE, info->CPUMinMHz);
+                compare_key_and_extract_str(ARCHITECTURE, temp, BUFFERSIZE, info->Architecture);
+                compare_key_and_extract_str(THREADS, temp, BUFFERSIZE, info->Threads);
+                compare_key_and_extract_str(VENDORID, temp, BUFFERSIZE, info->VendorID);
+                compare_key_and_extract_str(MODELNAME, temp, BUFFERSIZE, info->ModelName);
+                compare_key_and_extract_str(CORES, temp, BUFFERSIZE, info->Cores);
+                compare_key_and_extract_str(CPUMAXMHZ, temp, BUFFERSIZE, info->CPUMaxMHz);
+                compare_key_and_extract_str(CPUMIMMHZ, temp, BUFFERSIZE, info->CPUMinMHz);
         }
 
         pclose(result);

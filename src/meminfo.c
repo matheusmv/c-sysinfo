@@ -1,6 +1,6 @@
 #include "meminfo.h"
 
-#define BUFFERSIZE 512
+#define BUFFERSIZE 128
 
 #define MEMINFOPATH  "/proc/meminfo"
 
@@ -17,36 +17,12 @@
 
 static uint TOTAL_PROPERTIES = 10;
 
-static int
-extract_value(const char *stkn, const char *etkn, const char *src, char *dest, size_t dest_size)
-{
-        char *start = strstr(src, stkn);
-        char *end = strstr(src, etkn);
-        if (start == NULL || end == NULL)
-                return -1;
-
-        const char *withe_space = " ";
-        while (strncmp(start, withe_space, strlen(withe_space)) == 0)
-                start++;
-
-        char buffer[dest_size];
-        memset(buffer, 0, dest_size);
-        memmove(buffer, start, (strlen(start) - strlen(end)));
-
-        if (dest != NULL) {
-                memset(dest, 0, dest_size);
-                memmove(dest, buffer, dest_size);
-        }
-
-        return 0;
-}
-
 static void
-compare_string_and_extract_value(const char *key, const char *src, size_t src_size, uint64_t *dest)
+compare_key_and_extract_ul(const char *key, const char *src, size_t src_size, uint64_t *dest)
 {
         if (strncmp(src, key, strlen(key)) == 0) {
-                char temp[BUFFERSIZE];
-                extract_value(" ", " kB", src, temp, BUFFERSIZE);
+                char temp[src_size];
+                extract_value(": ", " kB", src, temp, src_size);
                 *dest = atol(temp);
                 TOTAL_PROPERTIES -= 1;
         }
@@ -71,16 +47,16 @@ meminfo(struct MemInfo *info)
                 if (TOTAL_PROPERTIES == 0)
                         break;
 
-                compare_string_and_extract_value(MEMTOTAL, temp, BUFFERSIZE, &info->MemTotal);
-                compare_string_and_extract_value(MEMFREE, temp, BUFFERSIZE, &info->MemFree);
-                compare_string_and_extract_value(MEMAVAILABLE, temp, BUFFERSIZE, &info->MemAvailable);
-                compare_string_and_extract_value(BUFFERS, temp, BUFFERSIZE, &info->Buffers);
-                compare_string_and_extract_value(CACHED, temp, BUFFERSIZE, &info->Cached);
-                compare_string_and_extract_value(SWAPCACHED, temp, BUFFERSIZE, &info->SwapCached);
-                compare_string_and_extract_value(SWAPTOTAL, temp, BUFFERSIZE, &info->SwapTotal);
-                compare_string_and_extract_value(SWAPFREE, temp, BUFFERSIZE, &info->SwapFree);
-                compare_string_and_extract_value(SHMEM, temp, BUFFERSIZE, &info->Shmem);
-                compare_string_and_extract_value(SRECLAIMABLE, temp, BUFFERSIZE, &info->SReclaimable);
+                compare_key_and_extract_ul(MEMTOTAL, temp, BUFFERSIZE, &info->MemTotal);
+                compare_key_and_extract_ul(MEMFREE, temp, BUFFERSIZE, &info->MemFree);
+                compare_key_and_extract_ul(MEMAVAILABLE, temp, BUFFERSIZE, &info->MemAvailable);
+                compare_key_and_extract_ul(BUFFERS, temp, BUFFERSIZE, &info->Buffers);
+                compare_key_and_extract_ul(CACHED, temp, BUFFERSIZE, &info->Cached);
+                compare_key_and_extract_ul(SWAPCACHED, temp, BUFFERSIZE, &info->SwapCached);
+                compare_key_and_extract_ul(SWAPTOTAL, temp, BUFFERSIZE, &info->SwapTotal);
+                compare_key_and_extract_ul(SWAPFREE, temp, BUFFERSIZE, &info->SwapFree);
+                compare_key_and_extract_ul(SHMEM, temp, BUFFERSIZE, &info->Shmem);
+                compare_key_and_extract_ul(SRECLAIMABLE, temp, BUFFERSIZE, &info->SReclaimable);
         }
 
         fclose(proc_meminfo);

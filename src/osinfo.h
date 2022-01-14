@@ -6,6 +6,7 @@
 #include <stdlib.h>
 #include <string.h>
 
+#include "extractors.h"
 #include "log-handler.h"
 
 #define BUFFERSIZE 128
