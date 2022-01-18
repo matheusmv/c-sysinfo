@@ -1,6 +1,7 @@
 #ifndef _EXTRACTORS_H
 #define _EXTRACTORS_H
 
+#include <ctype.h>
 #include <stdint.h>
 #include <stdlib.h>
 #include <string.h>

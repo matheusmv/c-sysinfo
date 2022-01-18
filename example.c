@@ -2,7 +2,7 @@
 // make ARGS="example.c"
 // make debug ARGS="example.c"
 
-#include "src/c-sysinfo.h"
+#include "c-sysinfo.h"
 
 void get_meminfo(void)
 {
@@ -64,46 +64,11 @@ void get_osinfo(void)
         fprintf(stdout, "Uptime: %s", info.Uptime);
 }
 
-void test_log(void)
-{
-        LOG_INFO("info");
-        LOG_DEBUG("debug");
-        LOG_WARNING("warning");
-        LOG_ERROR("error");
-}
-
-void test_log_file(void)
-{
-        FILE *logs = NULL;
-
-        logs = fopen("logs.txt", "a+");
-        if (logs == NULL) {
-                LOG_ERROR_FMT("%s", strerror(errno));
-                exit(EXIT_FAILURE);
-        }
-
-        FLOG_INFO(logs, "info message");
-        FLOG_INFO_FMT(logs, "info %d", 1);
-
-        FLOG_DEBUG(logs, "debug message");
-        FLOG_DEBUG_FMT(logs, "debug %d", 2);
-
-        FLOG_WARNING(logs, "warning message");
-        FLOG_WARNING_FMT(logs, "warning %d", 3);
-
-        FLOG_ERROR(logs, "error message");
-        FLOG_ERROR_FMT(logs, "error %d", 4);
-
-        fclose(logs);
-}
-
 int main(int argc, char *argv[])
 {
         get_meminfo();
         get_cpuinfo();
         get_osinfo();
-        test_log();
-        test_log_file();
 
         return EXIT_SUCCESS;
 }

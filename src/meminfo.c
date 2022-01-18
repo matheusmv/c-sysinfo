@@ -1,4 +1,5 @@
 #include "meminfo.h"
+#include "clog.h"
 
 #define BUFFERSIZE 128
 
@@ -36,7 +37,7 @@ meminfo(struct MemInfo *info)
         FILE *proc_meminfo = NULL;
         proc_meminfo = fopen(MEMINFOPATH, "r");
         if (proc_meminfo == NULL) {
-                LOG_ERROR_FMT("%s", strerror(errno));
+                LOG_ERROR("%s", strerror(errno));
                 exit(EXIT_FAILURE);
         }
 

@@ -1,4 +1,5 @@
 #include "cpuinfo.h"
+#include "clog.h"
 
 #define COMMAND         "lscpu | head --lines 17"
 
@@ -30,7 +31,7 @@ cpuinfo(struct CpuInfo *info)
 
         result = popen(COMMAND, "r");
         if (result == NULL) {
-                LOG_ERROR_FMT("%s", strerror(errno));
+                LOG_ERROR("%s", strerror(errno));
                 exit(EXIT_FAILURE);
         }
 

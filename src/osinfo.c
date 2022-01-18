@@ -1,4 +1,5 @@
 #include "osinfo.h"
+#include "clog.h"
 
 #define COMMAND "echo \"User: $(whoami)\n\
 $(hostnamectl | awk '{gsub(/^ +| +$/,\"\")} {print $0}')\n\
@@ -32,7 +33,7 @@ int osinfo(struct OsInfo *info)
 
         result = popen(COMMAND, "r");
         if (result == NULL) {
-                LOG_ERROR_FMT("%s", strerror(errno));
+                LOG_ERROR("%s", strerror(errno));
                 exit(EXIT_FAILURE);
         }
 

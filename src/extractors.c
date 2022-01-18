@@ -12,9 +12,7 @@ extract_value(const char *stkn, const char *etkn, const char *src, char *dest, s
         if (end == NULL)
                 return -1;
 
-        start++;
-        const char *withe_space = " ";
-        while (strncmp(start, withe_space, strlen(withe_space)) == 0)
+        while (isspace(*start) || ispunct(*start))
                 start++;
 
         char buffer[dest_size];
