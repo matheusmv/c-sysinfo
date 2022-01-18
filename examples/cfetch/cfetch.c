@@ -54,7 +54,7 @@ int main(void)
 
         pthread_join(cputhrd, NULL);
 
-        buffer_appendf(template, format[6], CWHT, CEND, cpuinfo.ModelName, cpuinfo.Threads, (atof(cpuinfo.CPUMaxMHz) / 1000));
+        buffer_appendf(template, format[6], CWHT, CEND, cpuinfo.ModelName, cpuinfo.Threads, (atof(cpuinfo.CPUMHz) / 1000));
 
         pthread_join(memthrd, NULL);
 
@@ -63,7 +63,7 @@ int main(void)
         char *result = buffer_to_string(template);
         buffer_free(template);
 
-        fprintf(stdout, result);
+        fprintf(stdout, "%s", result);
         free(result);
 
         return EXIT_SUCCESS;
