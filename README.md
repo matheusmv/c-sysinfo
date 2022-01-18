@@ -1,3 +1,3 @@
 # c-sysinfo
-  
-    under development
+
+get system information in C
