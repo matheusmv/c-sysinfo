@@ -1,4 +1,4 @@
-// gcc -O2 -pedantic-errors -Wall -Werror ../../src/*.c example2.c -o sysinfo -lpthread
+// gcc -O2 -pedantic-errors -Wall -Werror ../../src/*.c example2.c -o cfetch -lpthread
 // make
 // make debug
 
