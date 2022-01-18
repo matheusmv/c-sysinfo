@@ -38,8 +38,8 @@ int main(void)
         pthread_t memthrd, cputhrd, osthrd;
 
         pthread_create(&osthrd, NULL, osthrd_fn, &osinfo);
-        pthread_create(&memthrd, NULL, memthrd_fn, &meminfo);
         pthread_create(&cputhrd, NULL, cputhrd_fn, &cpuinfo);
+        pthread_create(&memthrd, NULL, memthrd_fn, &meminfo);
 
         buffer *template = new_buffer(512);
 
