@@ -23,7 +23,7 @@ find_key_and_extract_ul(const char *key, const char *src, size_t src_size, uint6
 {
         if (strncmp(src, key, strlen(key)) == 0) {
                 char temp[src_size];
-                extract_value(": ", " kB", src, temp, src_size);
+                extract_value(": ", "kB", src, temp, src_size);
                 *dest = atol(temp);
                 TOTAL_PROPERTIES -= 1;
         }
