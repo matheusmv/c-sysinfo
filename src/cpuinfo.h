@@ -17,8 +17,7 @@ struct CpuInfo {
         char VendorID[BUFFERSIZE];      /* Vendor ID */
         char ModelName[BUFFERSIZE];     /* Model name */
         char Cores[BUFFERSIZE];         /* CPU Cores */
-        char CPUMaxMHz[BUFFERSIZE];     /* CPU max MHz */
-        char CPUMinMHz[BUFFERSIZE];     /* CPU min MHz */
+        char CPUMHz[BUFFERSIZE];     /* CPU MHz */
 };
 
 int cpuinfo(struct CpuInfo *info);

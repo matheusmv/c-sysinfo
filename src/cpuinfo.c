@@ -8,10 +8,10 @@
 #define VENDORID        "Vendor ID:"            /* 3 */
 #define MODELNAME       "Model name:"           /* 4 */
 #define CORES           "Core(s) per socket:"   /* 5 */
+#define CPUMHZ          "CPU MHz:"              /* 6 */
 #define CPUMAXMHZ       "CPU max MHz:"          /* 6 */
-#define CPUMIMMHZ       "CPU min MHz:"          /* 7 */
 
-static uint TOTAL_PROPERTIES = 7;
+static uint TOTAL_PROPERTIES = 6;
 
 static void
 find_key_and_extract_str(const char *key, const char *src, size_t src_size, char *dest)
@@ -45,8 +45,8 @@ cpuinfo(struct CpuInfo *info)
                 find_key_and_extract_str(VENDORID, temp, BUFFERSIZE, info->VendorID);
                 find_key_and_extract_str(MODELNAME, temp, BUFFERSIZE, info->ModelName);
                 find_key_and_extract_str(CORES, temp, BUFFERSIZE, info->Cores);
-                find_key_and_extract_str(CPUMAXMHZ, temp, BUFFERSIZE, info->CPUMaxMHz);
-                find_key_and_extract_str(CPUMIMMHZ, temp, BUFFERSIZE, info->CPUMinMHz);
+                find_key_and_extract_str(CPUMHZ, temp, BUFFERSIZE, info->CPUMHz);
+                find_key_and_extract_str(CPUMAXMHZ, temp, BUFFERSIZE, info->CPUMHz);
         }
 
         pclose(result);

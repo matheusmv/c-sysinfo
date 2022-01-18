@@ -42,8 +42,7 @@ void get_cpuinfo(void)
         fprintf(stdout, "Model name: %s\n", info.ModelName);
         fprintf(stdout, "CPU Cores: %s\n", info.Cores);
         fprintf(stdout, "Threads: %s\n", info.Threads);
-        fprintf(stdout, "CPU max MHz: %s\n", info.CPUMaxMHz);
-        fprintf(stdout, "CPU min MHz: %s\n", info.CPUMinMHz);
+        fprintf(stdout, "CPU MHz: %s\n", info.CPUMHz);
 }
 
 void get_osinfo(void)
