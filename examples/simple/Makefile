@@ -5,7 +5,9 @@ CFLAGS=-O2 \
 	-Wall \
 	-Werror \
 
-OBJS=src/*.c
+OBJS=../../src/*.c
+
+SRC=simple.c
 
 OBJ_NAME=sysinfo
 
@@ -15,7 +17,7 @@ debug: CFLAGS += -g
 debug: all
 
 relase:
-	$(CC) $(CFLAGS) $(COMPILER_FLAGS) $(OBJS) $(ARGS) -o $(OBJ_NAME)
+	$(CC) $(CFLAGS) $(COMPILER_FLAGS) $(OBJS) $(SRC) -o $(OBJ_NAME)
 
 clean:
 	rm $(OBJ_NAME)

@@ -1,8 +1,11 @@
-// gcc -O2 -pedantic-errors -Wall -Werror src/*.c example.c -o sysinfo
-// make ARGS="example.c"
-// make debug ARGS="example.c"
+// gcc -O2 -pedantic-errors -Wall -Werror ../../src/*.c simple.c -o sysinfo
+// make
+// make debug
 
-#include "c-sysinfo.h"
+#include "../../src/clog.h"
+#include "../../src/cpuinfo.h"
+#include "../../src/meminfo.h"
+#include "../../src/osinfo.h"
 
 void get_meminfo(void)
 {
@@ -34,13 +37,13 @@ void get_cpuinfo(void)
                 exit(EXIT_FAILURE);
         }
 
-        fprintf(stdout, "Architecture: %s", info.Architecture);
-        fprintf(stdout, "Vendor ID: %s", info.VendorID);
-        fprintf(stdout, "Model name: %s", info.ModelName);
-        fprintf(stdout, "CPU Cores: %s", info.Cores);
-        fprintf(stdout, "Threads: %s", info.Threads);
-        fprintf(stdout, "CPU max MHz: %s", info.CPUMaxMHz);
-        fprintf(stdout, "CPU min MHz: %s", info.CPUMinMHz);
+        fprintf(stdout, "Architecture: %s\n", info.Architecture);
+        fprintf(stdout, "Vendor ID: %s\n", info.VendorID);
+        fprintf(stdout, "Model name: %s\n", info.ModelName);
+        fprintf(stdout, "CPU Cores: %s\n", info.Cores);
+        fprintf(stdout, "Threads: %s\n", info.Threads);
+        fprintf(stdout, "CPU max MHz: %s\n", info.CPUMaxMHz);
+        fprintf(stdout, "CPU min MHz: %s\n", info.CPUMinMHz);
 }
 
 void get_osinfo(void)
@@ -54,17 +57,17 @@ void get_osinfo(void)
                 exit(EXIT_FAILURE);
         }
 
-        fprintf(stdout, "User: %s", info.User);
-        fprintf(stdout, "Hostname: %s", info.Hostname);
-        fprintf(stdout, "OS: %s", info.OSName);
-        fprintf(stdout, "Kernel: %s", info.Kernel);
-        fprintf(stdout, "Architecture: %s", info.Architecture);
-        fprintf(stdout, "Hardware Vendor: %s", info.HardwareVendor);
-        fprintf(stdout, "Hardware Model: %s", info.HardwareModel);
-        fprintf(stdout, "Uptime: %s", info.Uptime);
+        fprintf(stdout, "User: %s\n", info.User);
+        fprintf(stdout, "Hostname: %s\n", info.Hostname);
+        fprintf(stdout, "OS: %s\n", info.OSName);
+        fprintf(stdout, "Kernel: %s\n", info.Kernel);
+        fprintf(stdout, "Architecture: %s\n", info.Architecture);
+        fprintf(stdout, "Hardware Vendor: %s\n", info.HardwareVendor);
+        fprintf(stdout, "Hardware Model: %s\n", info.HardwareModel);
+        fprintf(stdout, "Uptime: %s\n", info.Uptime);
 }
 
-int main(int argc, char *argv[])
+int main(void)
 {
         get_meminfo();
         get_cpuinfo();
