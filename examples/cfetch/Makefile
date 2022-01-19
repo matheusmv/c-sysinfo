@@ -1,23 +1,23 @@
 CC=gcc
 
-CFLAGS=-O2 \
-	-pedantic-errors \
-	-Wall \
-	-Werror \
+CFLAGS=-pedantic-errors -Wall -Werror
+
+LFLAGS=-lpthread
 
 OBJS=../../src/*.c buffer.c
 
 SRC=cfetch.c
 
-OBJ_NAME=cfetch
+BIN=cfetch
 
+all: CFLAGS+=-O2
 all: relase
 
-debug: CFLAGS += -g
-debug: all
+debug: CFLAGS+=-O0 -g
+debug: relase
 
 relase:
-	$(CC) $(CFLAGS) $(COMPILER_FLAGS) $(OBJS) $(SRC) -o $(OBJ_NAME) -lpthread
+	$(CC) $(CFLAGS) $(COMPILER_FLAGS) $(OBJS) $(SRC) -o $(BIN) $(LFLAGS)
 
 clean:
-	rm $(OBJ_NAME)
+	rm $(BIN)

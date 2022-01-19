@@ -1,23 +1,21 @@
 CC=gcc
 
-CFLAGS=-O2 \
-	-pedantic-errors \
-	-Wall \
-	-Werror \
+CFLAGS=-pedantic-errors -Wall -Werror
 
-OBJS=../../src/*.c
+LIBS=../../src/*.c
 
 SRC=simple.c
 
-OBJ_NAME=sysinfo
+BIN=sysinfo
 
+all: CFLAGS+=-O2
 all: relase
 
-debug: CFLAGS += -g
-debug: all
+debug: CFLAGS+=-O0 -g
+debug: relase
 
 relase:
-	$(CC) $(CFLAGS) $(COMPILER_FLAGS) $(OBJS) $(SRC) -o $(OBJ_NAME)
+	$(CC) $(CFLAGS) $(LIBS) $(SRC) -o $(BIN)
 
 clean:
-	rm $(OBJ_NAME)
+	rm $(BIN)
