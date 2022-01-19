@@ -1,5 +1,4 @@
 #include "cpuinfo.h"
-#include "clog.h"
 
 #define COMMAND         "lscpu | head --lines 17"
 
@@ -28,12 +27,8 @@ cpuinfo(struct CpuInfo *info)
         memset(info, 0, sizeof(struct CpuInfo));
 
         FILE *result = NULL;
-
-        result = popen(COMMAND, "r");
-        if (result == NULL) {
-                LOG_ERROR("%s", strerror(errno));
-                exit(EXIT_FAILURE);
-        }
+        if ((result = popen(COMMAND, "r")) == NULL)
+                return -1;
 
         char temp[BUFFERSIZE];
         while (fgets(temp, BUFFERSIZE, result) != NULL) {
