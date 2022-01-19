@@ -1,8 +1,6 @@
-// gcc -O2 -pedantic-errors -Wall -Werror ../../src/*.c simple.c -o sysinfo
 // make
 // make debug
 
-#include "../../src/clog.h"
 #include "../../src/cpuinfo.h"
 #include "../../src/meminfo.h"
 #include "../../src/osinfo.h"
@@ -10,11 +8,10 @@
 void get_meminfo(void)
 {
         struct MemInfo info;
-        int status = 0;
 
-        status = meminfo(&info);
-        if (status < 0) {
-                LOG_ERROR("Could not load memory information.");
+        int status = 0;
+        if ((status = meminfo(&info)) < 0) {
+                fprintf(stderr, "Could not load memory information. (%d)\n", status);
                 exit(EXIT_FAILURE);
         }
 
@@ -29,11 +26,10 @@ void get_meminfo(void)
 void get_cpuinfo(void)
 {
         struct CpuInfo info;
-        int status = 0;
 
-        status = cpuinfo(&info);
-        if (status < 0) {
-                LOG_ERROR("Could not load cpu information.");
+        int status = 0;
+        if ((status = cpuinfo(&info)) < 0) {
+                fprintf(stderr, "Could not load cpu information. (%d)\n", status);
                 exit(EXIT_FAILURE);
         }
 
@@ -48,11 +44,10 @@ void get_cpuinfo(void)
 void get_osinfo(void)
 {
         struct OsInfo info;
-        int status = 0;
 
-        status = osinfo(&info);
-        if (status < 0) {
-                LOG_ERROR("Could not load OS information.");
+        int status = 0;
+        if ((status = osinfo(&info)) < 0) {
+                fprintf(stderr, "Could not load OS information. (%d)\n", status);
                 exit(EXIT_FAILURE);
         }
 
