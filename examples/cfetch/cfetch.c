@@ -1,4 +1,3 @@
-// gcc -O2 -pedantic-errors -Wall -Werror ../../src/*.c example2.c -o cfetch -lpthread
 // make
 // make debug
 
@@ -6,7 +5,6 @@
 
 #include "buffer.h"
 
-#include "../../src/clog.h"
 #include "../../src/cpuinfo.h"
 #include "../../src/meminfo.h"
 #include "../../src/osinfo.h"
@@ -31,11 +29,11 @@ static const char *format[] = {
 
 int main(void)
 {
-        struct MemInfo meminfo;
-        struct CpuInfo cpuinfo;
         struct OsInfo   osinfo;
+        struct CpuInfo cpuinfo;
+        struct MemInfo meminfo;
 
-        pthread_t memthrd, cputhrd, osthrd;
+        pthread_t osthrd, cputhrd, memthrd;
 
         pthread_create(&osthrd, NULL, osthrd_fn, &osinfo);
         pthread_create(&cputhrd, NULL, cputhrd_fn, &cpuinfo);
@@ -76,7 +74,7 @@ memthrd_fn(void *arg)
 
         int status = 0;
         if ((status = meminfo(info)) < 0)
-                LOG_ERROR("Could not load memory information.");
+                fprintf(stderr, "Could not load memory information. (%d)\n", status);
 
         return NULL;
 }
@@ -88,7 +86,7 @@ cputhrd_fn(void *arg)
 
         int status = 0;
         if ((status = cpuinfo(info)) < 0)
-                LOG_ERROR("Could not load cpu information.");
+                fprintf(stderr, "Could not load cpu information. (%d)\n", status);
 
         return NULL;
 }
@@ -100,7 +98,7 @@ osthrd_fn(void *arg)
 
         int status = 0;
         if ((status = osinfo(info)) < 0)
-                LOG_ERROR("Could not load OS information.");
+                fprintf(stderr, "Could not load OS information. (%d)\n", status);
 
         return NULL;
 }

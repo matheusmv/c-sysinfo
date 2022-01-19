@@ -1,18 +1,15 @@
 #include "buffer.h"
-#include "../../src/clog.h"
 
 buffer *
 new_buffer(uint size)
 {
         buffer *buf = malloc(sizeof(struct buffer));
         if (buf == NULL) {
-                LOG_ERROR("malloc() error. %s", strerror(errno));
                 return NULL;
         }
 
         char *data = calloc(1, size * sizeof(char));
         if (data == NULL) {
-                LOG_ERROR("calloc() error. %s", strerror(errno));
                 free(buf);
                 return NULL;
         }
@@ -61,7 +58,6 @@ increase_storage_capacity(buffer *buffer, uint size)
 
                 char *new_sdata = realloc(buffer->data, new_size * sizeof(char));
                 if (new_sdata == NULL) {
-                        LOG_ERROR("realloc() error. %s", strerror(errno));
                         return -1;
                 }
 
@@ -83,7 +79,6 @@ buffer_append(buffer *buffer, const char *src, uint src_length)
         if (buffer != NULL) {
                 if (!buffer_has_storage_available(buffer, src_length + 1)) {
                         if (increase_storage_capacity(buffer, src_length + 1) < 0) {
-                                LOG_ERROR("increase_storage_capacity() error.");
                                 return -1;
                         }
                 }
@@ -106,7 +101,6 @@ buffer_appendf(buffer *buffer, const char *format, ...)
         char *temp = NULL;
         int length = vasprintf(&temp, format, args);
         if (length < 0) {
-                LOG_ERROR("vasprintf() error.");
                 if (temp != NULL)
                         free(temp);
 
@@ -118,7 +112,6 @@ buffer_appendf(buffer *buffer, const char *format, ...)
         int status = 0;
         status = buffer_append(buffer, temp, length);
         if (status < 0) {
-                LOG_ERROR("buffer_append() error.");
                 if (temp != NULL)
                         free(temp);
 
@@ -135,7 +128,6 @@ buffer_nappendf(buffer *buffer, size_t length, const char *format, ...)
 {
         char *temp = calloc(1, (length + 1) * sizeof(char));
         if (temp == NULL) {
-                LOG_ERROR("calloc() error. %s", strerror(errno));
                 return -1;
         }
 
@@ -145,7 +137,6 @@ buffer_nappendf(buffer *buffer, size_t length, const char *format, ...)
         int status = 0;
         status = vsnprintf(temp, (length + 1), format, args);
         if (status < 0) {
-                LOG_ERROR("vsnprintf() error.");
                 if (temp != NULL)
                         free(temp);
 
@@ -156,7 +147,6 @@ buffer_nappendf(buffer *buffer, size_t length, const char *format, ...)
 
         status = buffer_append(buffer, temp, length);
         if (status < 0) {
-                LOG_ERROR("buffer_append() error.");
                 if (temp != NULL)
                         free(temp);
 
@@ -174,7 +164,6 @@ buffer_to_string(buffer *buffer)
         if (buffer != NULL && buffer->length > 0) {
                 char *string = calloc(1, buffer->length + 1);
                 if (string == NULL) {
-                        LOG_ERROR("calloc() error. %s", strerror(errno));
                         return NULL;
                 }
 
