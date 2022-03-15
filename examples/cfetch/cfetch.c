@@ -1,6 +1,3 @@
-// make
-// make debug
-
 #include <pthread.h>
 
 #include "buffer.h"
@@ -17,14 +14,14 @@ static void *osthrd_fn(void *);
 #define CEND "\033[0m"
 
 static const char *format[] = {
-        "%s%s%s@%s%s%s              \n",      /* 0 CWHTosinfo.UserCEND@CWHTosinfo.HostnameCEND                          */
-        "---------------------------\n",      /* 1 -----------------------                                              */
-        "%sOS%s: %s %s              \n",      /* 2 CWHOSCENDT: osinfo.OSName osinfo.Architecture                        */
-        "%sHost%s: %s               \n",      /* 3 CWHTHostCEND: osinfo.HardwareModel                                   */
-        "%sKernel%s: %s             \n",      /* 4 CWHTKernelCEND: osinfo.Kernel                                        */
-        "%sUptime%s: %s             \n",      /* 5 CWHTUptimeCEND: osinfo.Uptime                                        */
-        "%sCPU%s: %s (%s) @ %.1fGHz \n",      /* 6 CWHTCPUCEND: cpuinfo.ModelName (cpuinfo.Threads) @ cpuinfo.CPUMaxMHz */
-        "%sMemory%s: %ldMiB / %ldMiB\n"       /* 7 CWHTMemoryCEND: meminfo.MemUsed / meminfo.MemTotal                   */
+        "%s%s%s@%s%s%s              \n",  /* 0 CWHTosinfo.UserCEND@CWHTosinfo.HostnameCEND                          */
+        "---------------------------\n",  /* 1 -----------------------                                              */
+        "%sOS%s: %s %s              \n",  /* 2 CWHOSCENDT: osinfo.OSName osinfo.Architecture                        */
+        "%sHost%s: %s               \n",  /* 3 CWHTHostCEND: osinfo.HardwareModel                                   */
+        "%sKernel%s: %s             \n",  /* 4 CWHTKernelCEND: osinfo.Kernel                                        */
+        "%sUptime%s: %s             \n",  /* 5 CWHTUptimeCEND: osinfo.Uptime                                        */
+        "%sCPU%s: %s (%s) @ %.1fGHz \n",  /* 6 CWHTCPUCEND: cpuinfo.ModelName (cpuinfo.Threads) @ cpuinfo.CPUMaxMHz */
+        "%sMemory%s: %ldMiB / %ldMiB\n"   /* 7 CWHTMemoryCEND: meminfo.MemUsed / meminfo.MemTotal                   */
 };
 
 int main(void)
@@ -59,7 +56,7 @@ int main(void)
         buffer_appendf(template, format[7], CWHT, CEND, meminfo.MemUsed / (1 << 10), meminfo.MemTotal / (1 << 10));
 
         char *result = buffer_to_string(template);
-        buffer_free(template);
+        buffer_free(&template);
 
         fprintf(stdout, "%s", result);
         free(result);
@@ -73,8 +70,9 @@ memthrd_fn(void *arg)
         struct MemInfo *info = arg;
 
         int status = 0;
-        if ((status = meminfo(info)) < 0)
+        if ((status = meminfo(info)) < 0) {
                 fprintf(stderr, "Could not load memory information. (%d)\n", status);
+        }
 
         return NULL;
 }
@@ -85,8 +83,9 @@ cputhrd_fn(void *arg)
         struct CpuInfo *info = arg;
 
         int status = 0;
-        if ((status = cpuinfo(info)) < 0)
+        if ((status = cpuinfo(info)) < 0) {
                 fprintf(stderr, "Could not load cpu information. (%d)\n", status);
+        }
 
         return NULL;
 }
@@ -97,8 +96,9 @@ osthrd_fn(void *arg)
         struct OsInfo *info = arg;
 
         int status = 0;
-        if ((status = osinfo(info)) < 0)
+        if ((status = osinfo(info)) < 0) {
                 fprintf(stderr, "Could not load OS information. (%d)\n", status);
+        }
 
         return NULL;
 }

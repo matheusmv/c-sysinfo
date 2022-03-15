@@ -2,21 +2,21 @@
 
 #define COMMAND         "lscpu | head --lines 17"
 
-#define ARCHITECTURE    "Architecture:"         /* 1 */
-#define THREADS         "CPU(s):"               /* 2 */
-#define VENDORID        "Vendor ID:"            /* 3 */
-#define MODELNAME       "Model name:"           /* 4 */
-#define CORES           "Core(s) per socket:"   /* 5 */
-#define CPUMHZ          "CPU MHz:"              /* 6 */
-#define CPUMAXMHZ       "CPU max MHz:"          /* 6 */
+#define ARCHITECTURE    "Architecture:"        /* 1 */
+#define THREADS         "CPU(s):"              /* 2 */
+#define VENDORID        "Vendor ID:"           /* 3 */
+#define MODELNAME       "Model name:"          /* 4 */
+#define CORES           "Core(s) per socket:"  /* 5 */
+#define CPUMHZ          "CPU MHz:"             /* 6 */
+#define CPUMAXMHZ       "CPU max MHz:"         /* 6 */
 
-static uint TOTAL_PROPERTIES = 6;
+static uint8_t TOTAL_PROPERTIES = 6;
 
 static void
 find_key_and_extract_str(const char *key, const char *src, size_t src_size, char *dest)
 {
         if (strncmp(src, key, strlen(key)) == 0) {
-                extract_value(": ", "\n", src, dest, BUFFERSIZE);
+                extract_value(": ", "\n", src, dest, src_size);
                 TOTAL_PROPERTIES -= 1;
         }
 }
@@ -26,14 +26,16 @@ cpuinfo(struct CpuInfo *info)
 {
         memset(info, 0, sizeof(struct CpuInfo));
 
-        FILE *result = NULL;
-        if ((result = popen(COMMAND, "r")) == NULL)
+        FILE *result = popen(COMMAND, "r");
+        if (result == NULL) {
                 return -1;
+        }
 
         char temp[BUFFERSIZE];
         while (fgets(temp, BUFFERSIZE, result) != NULL) {
-                if (TOTAL_PROPERTIES == 0)
+                if (TOTAL_PROPERTIES == 0) {
                         break;
+                }
 
                 find_key_and_extract_str(ARCHITECTURE, temp, BUFFERSIZE, info->Architecture);
                 find_key_and_extract_str(THREADS, temp, BUFFERSIZE, info->Threads);

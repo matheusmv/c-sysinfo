@@ -4,18 +4,18 @@
 
 #define MEMINFOPATH  "/proc/meminfo"
 
-#define MEMTOTAL     "MemTotal:"        /* 1 */
-#define MEMFREE      "MemFree:"         /* 2 */
-#define MEMAVAILABLE "MemAvailable:"    /* 3 */
-#define BUFFERS      "Buffers:"         /* 4 */
-#define CACHED       "Cached:"          /* 5 */
-#define SWAPTOTAL    "SwapTotal:"       /* 6 */
-#define SWAPFREE     "SwapFree:"        /* 7 */
-#define SWAPCACHED   "SwapCached:"      /* 8 */
-#define SHMEM        "Shmem:"           /* 9 */
-#define SRECLAIMABLE "SReclaimable:"    /* 10 */
+#define MEMTOTAL     "MemTotal:"      /* 1 */
+#define MEMFREE      "MemFree:"       /* 2 */
+#define MEMAVAILABLE "MemAvailable:"  /* 3 */
+#define BUFFERS      "Buffers:"       /* 4 */
+#define CACHED       "Cached:"        /* 5 */
+#define SWAPTOTAL    "SwapTotal:"     /* 6 */
+#define SWAPFREE     "SwapFree:"      /* 7 */
+#define SWAPCACHED   "SwapCached:"    /* 8 */
+#define SHMEM        "Shmem:"         /* 9 */
+#define SRECLAIMABLE "SReclaimable:"  /* 10 */
 
-static uint TOTAL_PROPERTIES = 10;
+static uint8_t TOTAL_PROPERTIES = 10;
 
 static void
 find_key_and_extract_ul(const char *key, const char *src, size_t src_size, uint64_t *dest)
@@ -33,14 +33,16 @@ meminfo(struct MemInfo *info)
 {
         memset(info, 0, sizeof(struct MemInfo));
 
-        FILE *proc_meminfo = NULL;
-        if ((proc_meminfo = fopen(MEMINFOPATH, "r")) == NULL)
+        FILE *proc_meminfo = fopen(MEMINFOPATH, "r");
+        if (proc_meminfo == NULL) {
                 return -1;
+        }
 
         char temp[BUFFERSIZE];
         while (fgets(temp, BUFFERSIZE, proc_meminfo) != NULL) {
-                if (TOTAL_PROPERTIES == 0)
+                if (TOTAL_PROPERTIES == 0) {
                         break;
+                }
 
                 find_key_and_extract_ul(MEMTOTAL, temp, BUFFERSIZE, &info->MemTotal);
                 find_key_and_extract_ul(MEMFREE, temp, BUFFERSIZE, &info->MemFree);
